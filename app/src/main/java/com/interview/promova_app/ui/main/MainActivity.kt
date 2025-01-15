@@ -10,7 +10,9 @@ import androidx.navigation.compose.rememberNavController
 import com.interview.promova_app.ui.navigation.AppNavHost
 import com.interview.promova_app.ui.navigation.NavigationItem
 import com.interview.promova_app.ui.theme.PromovaTheme
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class MainActivity: ComponentActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {

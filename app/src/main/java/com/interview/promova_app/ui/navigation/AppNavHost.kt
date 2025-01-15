@@ -6,7 +6,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.interview.promova_app.ui.login.LoginScreen
-import com.interview.promova_app.ui.main.HomeScreen
+import com.interview.promova_app.ui.main.content.HomeScreen
 
 @Composable
 fun AppNavHost(

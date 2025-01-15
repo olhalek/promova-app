@@ -1,4 +1,4 @@
-package com.interview.promova_app.ui.main
+package com.interview.promova_app.ui.main.content
 
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
