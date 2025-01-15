@@ -1,3 +1,10 @@
 <resources>
     <string name="app_name">Promova Interview Test App</string>
+
+    <string name="all_movies">All</string>
+    <string name="favourite_movies">Favourite</string>
+
+    <string name="like">Like</string>
+    <string name="share">Share</string>
+    <string name="remove">Remove</string>
 </resources>

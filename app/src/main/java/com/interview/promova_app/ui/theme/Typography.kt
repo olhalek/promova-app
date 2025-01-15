@@ -12,5 +12,15 @@ val PromovaTypography = Typography(
         fontWeight = FontWeight.Normal,
         fontSize = 16.sp,
         color = textColorLight
-    )
+    ),
+    labelLarge = TextStyle(
+        fontFamily = FontFamily.Default,
+        fontWeight = FontWeight.Normal,
+        fontSize = 20.sp,
+    ),
+    labelMedium = TextStyle(
+        fontFamily = FontFamily.Default,
+        fontWeight = FontWeight.Normal,
+        fontSize = 14.sp,
+    ),
 )
