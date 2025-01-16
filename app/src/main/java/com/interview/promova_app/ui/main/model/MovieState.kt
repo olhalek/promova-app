@@ -8,5 +8,4 @@ data class MovieState(
     val isLoading: Boolean = false,
     val isInternetOn: Boolean = true,
     val listPage: Int = 1,
-    val isCurrentHomeScreen: Boolean = true
 )

@@ -11,6 +11,7 @@ import com.interview.promova_app.domain.useCase.NetworkUseCase
 import com.interview.promova_app.ui.main.model.MovieState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.collectLatest
@@ -29,6 +30,10 @@ class HomeViewModel @Inject constructor(
     private val _movieState: MutableStateFlow<MovieState> = MutableStateFlow(MovieState())
     val movieState = _movieState.asStateFlow()
 
+    private val _isRefreshing = MutableStateFlow(false)
+    val isRefreshing: StateFlow<Boolean>
+        get() = _isRefreshing.asStateFlow()
+
     init {
         viewModelScope.launch {
             val networkStatus = networkUseCase.getNetworkStatus(viewModelScope).value
@@ -42,6 +47,15 @@ class HomeViewModel @Inject constructor(
                     isInternetOn = false
                 )
             }
+        }
+    }
+
+    fun onPullToRefresh() {
+        _isRefreshing.update { true }
+        _movieState.update { it.copy(list = emptyList()) }
+
+        viewModelScope.launch {
+            getMovieList()
         }
     }
 
@@ -70,6 +84,7 @@ class HomeViewModel @Inject constructor(
                             isLoading = false
                         )
                     }
+                    _isRefreshing.update { false }
                 }
 
                 is ApiState.Loading -> {
