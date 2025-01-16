@@ -33,7 +33,7 @@ import com.interview.promova_app.ui.theme.PromovaTypography
 fun HomeScreen(
     viewModel: HomeViewModel = hiltViewModel()
 ) {
-    val res = viewModel.res.value
+    val res = viewModel.movieState.value
     if (res.isLoading) {
         LoadingContent()
     }
@@ -42,8 +42,8 @@ fun HomeScreen(
         ErrorContent()
     }
 
-    if (res.data.isNotEmpty()) {
-        MainContent()
+    if (res.list.isNotEmpty()) {
+        HomeMainContent()
     }
 }
 
@@ -86,7 +86,7 @@ fun ErrorContent() {
 }
 
 @Composable
-private fun MainContent() {
+private fun HomeMainContent() {
     var selectedTabIndex by remember { mutableIntStateOf(0) }
 
     Column {

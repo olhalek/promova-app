@@ -1,20 +1,34 @@
 package com.interview.promova_app.domain.mapper
 
-import com.interview.promova_app.data.remote.MoviesResponse
+import com.interview.promova_app.data.local.MovieEntity
+import com.interview.promova_app.data.remote.MovieResponse
+import com.interview.promova_app.data.remote.MoviesResponseItem
 import javax.inject.Inject
 
 
 class MovieMapper @Inject constructor() {
 
-    fun fromMap(from: MoviesResponse?): List<MoviesResponse.Movie>? {
+    fun toMovieResponse(from: MoviesResponseItem?): List<MovieResponse>? {
         return from?.results?.map {
-            MoviesResponse.Movie(
+            MovieResponse(
                 id = it?.id,
-                original_title = it?.original_title,
+                title = it?.title,
                 overview = it?.overview,
                 poster_path = it?.poster_path,
-                vote_average = it?.vote_average
+                vote_average = it?.vote_average,
+                release_date = it?.release_date
             )
         }
+    }
+
+    fun toMovieEntity(movieResponse: MovieResponse): MovieEntity {
+        return MovieEntity(
+            id = movieResponse.id ?: -1,
+            overview = movieResponse.overview ?: "",
+            poster_path = movieResponse.poster_path ?: "",
+            release_date = movieResponse.release_date ?: "",
+            title = movieResponse.title ?: "",
+            vote_average = movieResponse.vote_average ?: 0.0f,
+        )
     }
 }

@@ -23,7 +23,7 @@ import com.interview.promova_app.ui.theme.PromovaTheme
 import com.interview.promova_app.ui.theme.PromovaTypography
 
 @Composable
-fun MovieCard(movie: Movie) {
+fun MovieCard(movie: MovieItem) {
     Card(shape = RoundedCornerShape(12.dp)) {
         Column(
             modifier = Modifier.padding(16.dp),
@@ -79,7 +79,7 @@ fun MovieCard(movie: Movie) {
 private fun MovieCardPreview() {
     PromovaTheme {
         MovieCard(
-            Movie(
+            MovieItem(
                 name = "Jame Smith",
                 description = "dfgn sglk s slkfg s fkg  slkg s gn sglk s slkfg s fkg  slkg s gskd ns fglkgn sglk s slkfg s fkg  slkg s gskd ns fglkgn sglk s slkfg s fkg  slkg s gskd ns fglkgn sglk s slkfg s fkg  slkg s gskd ns fglkgn sglk s slkfg s fkg  slkg s gskd ns fglkgskd ns fglk sn sdlg kns lksdf",
                 rate = "4.5"
@@ -88,7 +88,7 @@ private fun MovieCardPreview() {
     }
 }
 
-data class Movie(
+data class MovieItem(
     val name: String,
     val description: String,
     val rate: String,

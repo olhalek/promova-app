@@ -9,5 +9,5 @@ interface ApiService {
     @GET("discover/movie")
     suspend fun getMovies(
         @Query("api_key") apiKey: String
-    ): Response<MoviesResponse>
+    ): Response<MoviesResponseItem>
 }
