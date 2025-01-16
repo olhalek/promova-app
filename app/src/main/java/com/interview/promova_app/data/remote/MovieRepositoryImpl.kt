@@ -18,11 +18,11 @@ class MovieRepositoryImpl @Inject constructor(
     private val movieDatabase: MovieDatabase
 ) : MovieRepository {
 
-    override suspend fun getMovies(): Flow<ApiState<MoviesResponseItem>> {
+    override suspend fun getMovies(page: Int): Flow<ApiState<MoviesResponseItem>> {
         return flow {
             emit(ApiState.Loading)
 
-            val response = movieApi.getMovies(API_KEY)
+            val response = movieApi.getMovies(page = page, apiKey = API_KEY)
 
             if (response.isSuccessful) {
                 val data = response.body()

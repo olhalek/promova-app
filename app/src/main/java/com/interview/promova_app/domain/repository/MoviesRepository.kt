@@ -9,7 +9,7 @@ import kotlinx.coroutines.flow.Flow
 
 interface MovieRepository {
 
-    suspend fun getMovies(): Flow<ApiState<MoviesResponseItem>>
+    suspend fun getMovies(page: Int): Flow<ApiState<MoviesResponseItem>>
 
     suspend fun addMoviesToDd(movieEntities: List<MovieEntity>)
 

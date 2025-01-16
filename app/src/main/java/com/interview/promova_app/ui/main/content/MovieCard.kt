@@ -1,7 +1,6 @@
 package com.interview.promova_app.ui.main.content
 
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -18,7 +17,6 @@ import androidx.compose.material.icons.rounded.Star
 import androidx.compose.material.icons.rounded.Warning
 import androidx.compose.material3.Card
 import androidx.compose.material3.Icon
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
@@ -111,11 +109,10 @@ private fun ImageContent(imageState: AsyncImagePainter.State) {
     if (imageState is AsyncImagePainter.State.Error || imageState is AsyncImagePainter.State.Loading) {
         Box(
             modifier = Modifier
-                .fillMaxWidth()
                 .padding(6.dp)
+                .width(150.dp)
                 .height(250.dp)
-                .clip(RoundedCornerShape(22.dp))
-                .background(MaterialTheme.colorScheme.primaryContainer),
+                .clip(RoundedCornerShape(22.dp)),
             contentAlignment = Alignment.Center
         ) {
             Icon(

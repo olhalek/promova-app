@@ -1,8 +1,5 @@
 package com.interview.promova_app.ui.main.viewModel
 
-import androidx.compose.runtime.MutableState
-import androidx.compose.runtime.State
-import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.interview.promova_app.data.network.NetworkStatus
@@ -13,8 +10,12 @@ import com.interview.promova_app.domain.useCase.MovieUseCase
 import com.interview.promova_app.domain.useCase.NetworkUseCase
 import com.interview.promova_app.ui.main.model.MovieState
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.transform
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -25,36 +26,15 @@ class HomeViewModel @Inject constructor(
     private val mapper: MovieMapper
 ) : ViewModel() {
 
-    private val _movieState: MutableState<MovieState> = mutableStateOf(MovieState())
-    val movieState: State<MovieState> = _movieState
+    private val _movieState: MutableStateFlow<MovieState> = MutableStateFlow(MovieState())
+    val movieState = _movieState.asStateFlow()
 
     init {
         viewModelScope.launch {
             val networkStatus = networkUseCase.getNetworkStatus(viewModelScope).value
 
             if (networkStatus == NetworkStatus.Connected) {
-                movieUseCase.getMovies().transform { apiState ->
-                    when (apiState) {
-                        is ApiState.Success -> {
-                            _movieState.value = MovieState(
-                                list = apiState.data!!
-                            )
-                        }
-
-                        is ApiState.Loading -> {
-                            _movieState.value = MovieState(
-                                isLoading = true
-                            )
-                        }
-
-                        is ApiState.Failure -> {
-                            _movieState.value = MovieState(
-                                error = apiState.msg.message!!
-                            )
-                        }
-                    }
-                    return@transform emit(apiState)
-                }.collect()
+                getMovieList()
 
                 movieUseCase.addMoviesToDd(movieState.value)
             } else {
@@ -68,6 +48,44 @@ class HomeViewModel @Inject constructor(
     fun addToFavourites(movieResponse: MovieResponse) {
         viewModelScope.launch {
             movieUseCase.addMovieToFavourites(mapper.toFavouriteMovieEntity(movieResponse))
+        }
+    }
+
+    fun loadMoreMovies() {
+        viewModelScope.launch {
+            getMovieList()
+        }
+    }
+
+    private suspend fun getMovieList() {
+        movieUseCase.getMovies(
+            page = movieState.value.listPage
+        ).collectLatest { apiState ->
+            when (apiState) {
+                is ApiState.Success -> {
+                    _movieState.update {
+                        it.copy(
+                            list = movieState.value.list + apiState.data!!.shuffled(),
+                            listPage = movieState.value.listPage + 1,
+                            isLoading = false
+                        )
+                    }
+                }
+
+                is ApiState.Loading -> {
+                    if(_movieState.value.list.isEmpty()) {
+                        _movieState.update {
+                            it.copy(isLoading = true)
+                        }
+                    }
+                }
+
+                is ApiState.Failure -> {
+                    _movieState.update {
+                        it.copy(error = apiState.msg.message!!)
+                    }
+                }
+            }
         }
     }
 }

@@ -24,25 +24,31 @@ fun FavouriteMoviesScreen(
 
     val favouriteMoviesList = viewModel.favouriteMoviesState.value
 
-    LazyVerticalGrid(
-        columns = GridCells.Fixed(1),
-        modifier = Modifier.fillMaxSize().padding(16.dp),
-    ) {
-        items(favouriteMoviesList) {
-            Column(
-                modifier = Modifier.padding(top = 12.dp),
-                verticalArrangement = Arrangement.spacedBy(10.dp)
-            ) {
-                MovieCard(
-                    title = it.title,
-                    overview = it.overview,
-                    rate = it.vote_average,
-                    poster = it.poster_path,
-                    isFavourite = true,
-                    onAddToFavouriteClick = {
-                        viewModel.deleteFromFavourites(it)
-                    }
-                )
+    if(favouriteMoviesList.isEmpty()) {
+        NotificationContent(notificationType = NotificationType.EMPTY)
+    } else {
+        LazyVerticalGrid(
+            columns = GridCells.Fixed(1),
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(16.dp),
+        ) {
+            items(favouriteMoviesList) {
+                Column(
+                    modifier = Modifier.padding(top = 12.dp),
+                    verticalArrangement = Arrangement.spacedBy(10.dp)
+                ) {
+                    MovieCard(
+                        title = it.title,
+                        overview = it.overview,
+                        rate = it.vote_average,
+                        poster = it.poster_path,
+                        isFavourite = true,
+                        onAddToFavouriteClick = {
+                            viewModel.deleteFromFavourites(it)
+                        }
+                    )
+                }
             }
         }
     }

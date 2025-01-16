@@ -1,6 +1,7 @@
 package com.interview.promova_app.ui.main.content
 
-enum class ErrorType {
+enum class NotificationType {
     NO_INTERNET,
-    API_ERROR
+    API_ERROR,
+    EMPTY
 }

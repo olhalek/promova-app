@@ -16,8 +16,8 @@ class MovieUseCase @Inject constructor(
     private val mapper: MovieMapper
 ) {
 
-    suspend fun getMovies(): Flow<ApiState<List<MovieResponse>?>> {
-        return movieRepository.getMovies().map { results ->
+    suspend fun getMovies(page: Int): Flow<ApiState<List<MovieResponse>?>> {
+        return movieRepository.getMovies(page).map { results ->
             results.map {
                 mapper.toMovieResponse(it)
             }
@@ -25,9 +25,9 @@ class MovieUseCase @Inject constructor(
     }
 
     suspend fun addMoviesToDd(movieState: MovieState) {
-       val movieEntities = movieState.list.map {
-           mapper.toMovieEntity(it)
-       }
+        val movieEntities = movieState.list.map {
+            mapper.toMovieEntity(it)
+        }
         movieRepository.addMoviesToDd(movieEntities)
     }
 
