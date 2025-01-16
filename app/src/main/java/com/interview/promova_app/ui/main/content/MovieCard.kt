@@ -42,7 +42,6 @@ import com.interview.promova_app.ui.theme.PromovaTypography
 @Composable
 fun MovieCard(
     title: String,
-    date: String,
     rate: Double,
     overview: String,
     poster: String,
@@ -56,63 +55,51 @@ fun MovieCard(
             .build()
     ).state
 
-    Column(
-        modifier = Modifier.padding(top = 12.dp),
-        verticalArrangement = Arrangement.spacedBy(10.dp)
-    ) {
-        Text(
-            modifier = Modifier.padding(top = 10.dp, start = 6.dp),
-            text = date,
-            style = PromovaTypography.labelLarge
-        )
-
-
-        Card(shape = RoundedCornerShape(12.dp)) {
-            Column(
-                modifier = Modifier.padding(20.dp),
-                verticalArrangement = Arrangement.spacedBy(12.dp)
+    Card(shape = RoundedCornerShape(12.dp)) {
+        Column(
+            modifier = Modifier.padding(20.dp),
+            verticalArrangement = Arrangement.spacedBy(12.dp)
+        ) {
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.spacedBy(12.dp)
             ) {
-                Row(
-                    modifier = Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.spacedBy(12.dp)
-                ) {
-                    Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
-                        ImageContent(imageState = imageState)
-                        Row(
-                            verticalAlignment = Alignment.CenterVertically,
-                            horizontalArrangement = Arrangement.spacedBy(4.dp)
-                        ) {
-                            Icon(imageVector = Icons.Rounded.Star, contentDescription = null)
-                            Text(
-                                text = rate.toString(),
-                                style = PromovaTypography.labelLarge
-                            )
-                        }
-                    }
-                    Column(verticalArrangement = Arrangement.spacedBy(16.dp)) {
+                Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
+                    ImageContent(imageState = imageState)
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically,
+                        horizontalArrangement = Arrangement.spacedBy(4.dp)
+                    ) {
+                        Icon(imageVector = Icons.Rounded.Star, contentDescription = null)
                         Text(
-                            text = title,
+                            text = rate.toString(),
                             style = PromovaTypography.labelLarge
-                        )
-                        Text(
-                            style = PromovaTypography.labelMedium,
-                            text = overview,
                         )
                     }
                 }
+                Column(verticalArrangement = Arrangement.spacedBy(16.dp)) {
+                    Text(
+                        text = title,
+                        style = PromovaTypography.labelLarge
+                    )
+                    Text(
+                        style = PromovaTypography.labelMedium,
+                        text = overview,
+                    )
+                }
+            }
 
-                Row(
-                    modifier = Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.End
-                ) {
-                    val likeRes = if (isFavourite) R.string.delete_from_favourite else R.string.like
-                    TextButton(onClick = onAddToFavouriteClick) {
-                        Text(text = stringResource(id = likeRes))
-                    }
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.End
+            ) {
+                val likeRes = if (isFavourite) R.string.delete_from_favourite else R.string.like
+                TextButton(onClick = onAddToFavouriteClick) {
+                    Text(text = stringResource(id = likeRes))
+                }
 
-                    TextButton(onClick = { }) {
-                        Text(text = stringResource(id = R.string.share))
-                    }
+                TextButton(onClick = { }) {
+                    Text(text = stringResource(id = R.string.share))
                 }
             }
         }
@@ -161,7 +148,6 @@ private fun MovieCardPreview() {
             title = "Jame Smith",
             overview = "dfgn sglk s slkfg s fkg  slkg s gn sglk s slkfg s fkg  slkg s gskd ns fglkgn sglk s slkfg s fkg  slkg s gskd ns fglkgn sglk s slkfg s fkg  slkg s gskd ns fglkgn sglk s slkfg s fkg  slkg s gskd ns fglkgn sglk s slkfg s fkg  slkg s gskd ns fglkgskd ns fglk sn sdlg kns lksdf",
             rate = 4.5,
-            date = "1 Feb",
             poster = "",
             onAddToFavouriteClick = {},
             isFavourite = false

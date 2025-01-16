@@ -1,5 +1,7 @@
 package com.interview.promova_app.ui.main.content
 
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.grid.GridCells
@@ -27,17 +29,21 @@ fun FavouriteMoviesScreen(
         modifier = Modifier.fillMaxSize().padding(16.dp),
     ) {
         items(favouriteMoviesList) {
-            MovieCard(
-                title = it.title,
-                overview = it.overview,
-                rate = it.vote_average,
-                date = it.release_date,
-                poster = it.poster_path,
-                isFavourite = true,
-                onAddToFavouriteClick = {
-                    viewModel.deleteFromFavourites(it)
-                }
-            )
+            Column(
+                modifier = Modifier.padding(top = 12.dp),
+                verticalArrangement = Arrangement.spacedBy(10.dp)
+            ) {
+                MovieCard(
+                    title = it.title,
+                    overview = it.overview,
+                    rate = it.vote_average,
+                    poster = it.poster_path,
+                    isFavourite = true,
+                    onAddToFavouriteClick = {
+                        viewModel.deleteFromFavourites(it)
+                    }
+                )
+            }
         }
     }
 }
