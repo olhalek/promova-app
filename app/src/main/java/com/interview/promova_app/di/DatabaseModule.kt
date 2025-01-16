@@ -18,8 +18,9 @@ object DatabaseModule {
     fun providesMovieDatabase(app: Application): MovieDatabase {
         return Room.databaseBuilder(
             app,
-            MovieDatabase::class.java,
-            "moviedb.db"
-        ).build()
+            MovieDatabase::class.java, "moviedb.db"
+        )
+            .fallbackToDestructiveMigration()
+            .build()
     }
 }

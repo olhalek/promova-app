@@ -1,6 +1,7 @@
 package com.interview.promova_app.data.remote
 
 import com.interview.promova_app.common.API_KEY
+import com.interview.promova_app.data.local.FavouriteMovieEntity
 import com.interview.promova_app.data.local.MovieDatabase
 import com.interview.promova_app.data.local.MovieEntity
 import com.interview.promova_app.domain.repository.MovieRepository
@@ -47,5 +48,17 @@ class MovieRepositoryImpl @Inject constructor(
 
     override suspend fun addMoviesToDd(movieEntities: List<MovieEntity>) {
         movieDatabase.movieDao.upsertMovieList(movieEntities)
+    }
+
+    override suspend fun addMovieToFavourites(movieEntity: FavouriteMovieEntity) {
+        movieDatabase.movieDao.insertFavourite(movieEntity)
+    }
+
+    override suspend fun deleteMovieFromFavourites(movieEntity: FavouriteMovieEntity) {
+        movieDatabase.movieDao.deleteFavourite(movieEntity)
+    }
+
+    override suspend fun getFavouriteMovies(): List<FavouriteMovieEntity> {
+        return movieDatabase.movieDao.getFavouriteMovies()
     }
 }

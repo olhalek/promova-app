@@ -1,5 +1,6 @@
 package com.interview.promova_app.domain.useCase
 
+import com.interview.promova_app.data.local.FavouriteMovieEntity
 import com.interview.promova_app.data.remote.ApiState
 import com.interview.promova_app.data.remote.MovieResponse
 import com.interview.promova_app.domain.mapper.MovieMapper
@@ -28,5 +29,17 @@ class MovieUseCase @Inject constructor(
            mapper.toMovieEntity(it)
        }
         movieRepository.addMoviesToDd(movieEntities)
+    }
+
+    suspend fun addMovieToFavourites(movieEntity: FavouriteMovieEntity) {
+        movieRepository.addMovieToFavourites(movieEntity)
+    }
+
+    suspend fun deleteMovieFromFavourites(movieEntity: FavouriteMovieEntity) {
+        movieRepository.deleteMovieFromFavourites(movieEntity)
+    }
+
+    suspend fun getFavouriteMovies(): List<FavouriteMovieEntity> {
+        return movieRepository.getFavouriteMovies()
     }
 }

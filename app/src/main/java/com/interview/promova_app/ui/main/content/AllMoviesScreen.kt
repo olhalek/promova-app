@@ -40,14 +40,9 @@ fun AllMoviesScreen(
         ErrorContent()
     }
 
-    AllMoviesContent(movieState = movieState)
-}
-
-@Composable
-private fun AllMoviesContent(movieState: MovieState) {
     LazyVerticalGrid(
         columns = GridCells.Fixed(1),
-        modifier = Modifier.fillMaxSize().padding(horizontal = 16.dp),
+        modifier = Modifier.fillMaxSize().padding(16.dp),
     ) {
         items(movieState.list) {
             MovieCard(
@@ -55,7 +50,11 @@ private fun AllMoviesContent(movieState: MovieState) {
                 overview = it.overview ?: "",
                 rate = it.vote_average ?: 0.0,
                 date = it.release_date ?: "",
-                poster = it.poster_path ?: ""
+                poster = it.poster_path ?: "",
+                isFavourite = false,
+                onAddToFavouriteClick = {
+                    viewModel.addToFavourites(it)
+                }
             )
         }
     }

@@ -1,5 +1,6 @@
 package com.interview.promova_app.domain.mapper
 
+import com.interview.promova_app.data.local.FavouriteMovieEntity
 import com.interview.promova_app.data.local.MovieEntity
 import com.interview.promova_app.data.remote.MovieResponse
 import com.interview.promova_app.data.remote.MoviesResponseItem
@@ -23,6 +24,17 @@ class MovieMapper @Inject constructor() {
 
     fun toMovieEntity(movieResponse: MovieResponse): MovieEntity {
         return MovieEntity(
+            id = movieResponse.id ?: -1,
+            overview = movieResponse.overview ?: "",
+            poster_path = movieResponse.poster_path ?: "",
+            release_date = movieResponse.release_date ?: "",
+            title = movieResponse.title ?: "",
+            vote_average = movieResponse.vote_average ?: 0.0,
+        )
+    }
+
+    fun toFavouriteMovieEntity(movieResponse: MovieResponse) : FavouriteMovieEntity {
+        return FavouriteMovieEntity(
             id = movieResponse.id ?: -1,
             overview = movieResponse.overview ?: "",
             poster_path = movieResponse.poster_path ?: "",

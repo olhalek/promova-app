@@ -40,7 +40,15 @@ import com.interview.promova_app.ui.theme.PromovaTheme
 import com.interview.promova_app.ui.theme.PromovaTypography
 
 @Composable
-fun MovieCard(title: String, date: String, rate: Double, overview: String, poster: String) {
+fun MovieCard(
+    title: String,
+    date: String,
+    rate: Double,
+    overview: String,
+    poster: String,
+    onAddToFavouriteClick: () -> Unit,
+    isFavourite: Boolean
+) {
     val imageState = rememberAsyncImagePainter(
         model = ImageRequest.Builder(LocalContext.current)
             .data(IMAGE_BASE_URL + poster)
@@ -97,8 +105,9 @@ fun MovieCard(title: String, date: String, rate: Double, overview: String, poste
                     modifier = Modifier.fillMaxWidth(),
                     horizontalArrangement = Arrangement.End
                 ) {
-                    TextButton(onClick = { }) {
-                        Text(text = stringResource(id = R.string.like))
+                    val likeRes = if (isFavourite) R.string.delete_from_favourite else R.string.like
+                    TextButton(onClick = onAddToFavouriteClick) {
+                        Text(text = stringResource(id = likeRes))
                     }
 
                     TextButton(onClick = { }) {
@@ -153,7 +162,9 @@ private fun MovieCardPreview() {
             overview = "dfgn sglk s slkfg s fkg  slkg s gn sglk s slkfg s fkg  slkg s gskd ns fglkgn sglk s slkfg s fkg  slkg s gskd ns fglkgn sglk s slkfg s fkg  slkg s gskd ns fglkgn sglk s slkfg s fkg  slkg s gskd ns fglkgn sglk s slkfg s fkg  slkg s gskd ns fglkgskd ns fglk sn sdlg kns lksdf",
             rate = 4.5,
             date = "1 Feb",
-            poster = ""
+            poster = "",
+            onAddToFavouriteClick = {},
+            isFavourite = false
         )
     }
 }
