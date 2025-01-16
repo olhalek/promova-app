@@ -28,7 +28,7 @@ class MovieMapper @Inject constructor() {
             poster_path = movieResponse.poster_path ?: "",
             release_date = movieResponse.release_date ?: "",
             title = movieResponse.title ?: "",
-            vote_average = movieResponse.vote_average ?: 0.0f,
+            vote_average = movieResponse.vote_average ?: 0.0,
         )
     }
 }

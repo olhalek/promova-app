@@ -62,6 +62,7 @@ dependencies {
     implementation(libs.logging.interceptor)
     implementation(libs.bundles.retrofit)
     implementation(libs.bundles.hilt)
+    implementation(libs.coil)
     kapt(libs.hilt.ksp.android)
     kapt(libs.room.compiler)
     implementation(libs.bundles.room)
