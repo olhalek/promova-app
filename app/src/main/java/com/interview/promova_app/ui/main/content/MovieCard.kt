@@ -1,10 +1,12 @@
 package com.interview.promova_app.ui.main.content
 
+import android.content.Intent
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -13,12 +15,15 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.ArrowDropDown
+import androidx.compose.material.icons.rounded.Favorite
+import androidx.compose.material.icons.rounded.FavoriteBorder
+import androidx.compose.material.icons.rounded.Share
 import androidx.compose.material.icons.rounded.Star
 import androidx.compose.material.icons.rounded.Warning
+import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -87,16 +92,34 @@ fun MovieCard(
                 }
             }
 
+            val sendIntent: Intent = Intent().apply {
+                action = Intent.ACTION_SEND
+                putExtra(
+                    Intent.EXTRA_TEXT,
+                    "${stringResource(id = R.string.check_out_movie)} - $title"
+                )
+                type = "text/plain"
+            }
+            val shareIntent = Intent.createChooser(sendIntent, null)
+            val context = LocalContext.current
+
             Row(
                 modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.End
+                horizontalArrangement = Arrangement.End,
             ) {
-                val likeRes = if (isFavourite) R.string.delete_from_favourite else R.string.like
-                TextButton(onClick = onAddToFavouriteClick) {
-                    Text(text = stringResource(id = likeRes))
+                val likeRes =
+                    if (isFavourite) Icons.Rounded.Favorite else Icons.Rounded.FavoriteBorder
+                Button(onClick = onAddToFavouriteClick) {
+                    Icon(imageVector = likeRes, contentDescription = null)
                 }
 
-                TextButton(onClick = { }) {
+                Spacer(modifier = Modifier.width(8.dp))
+
+                Button(onClick = {
+                    context.startActivity(shareIntent)
+                }) {
+                    Icon(imageVector = Icons.Rounded.Share, contentDescription = null)
+                    Spacer(modifier = Modifier.width(4.dp))
                     Text(text = stringResource(id = R.string.share))
                 }
             }
