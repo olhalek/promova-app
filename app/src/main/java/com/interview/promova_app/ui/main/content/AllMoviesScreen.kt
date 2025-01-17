@@ -24,7 +24,7 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.interview.promova_app.R
-import com.interview.promova_app.data.remote.MovieResponse
+import com.interview.promova_app.ui.main.model.Movie
 import com.interview.promova_app.ui.main.viewModel.HomeViewModel
 import com.interview.promova_app.ui.theme.PromovaTypography
 
@@ -47,8 +47,9 @@ fun AllMoviesScreen(
                 onPullToRefresh = { viewModel.onPullToRefresh() },
                 onAddToFavouriteClick = {
                     viewModel.addToFavourites(it)
-                }, onLoadMoreMovies = {
-                    viewModel.loadMoreMovies()
+                },
+                onLoadMoreMovies = {
+                    viewModel.loadMovies(addToDb = false)
                 })
         }
     }
@@ -58,8 +59,8 @@ fun AllMoviesScreen(
 @Composable
 private fun ListContent(
     isRefreshing: Boolean,
-    list: List<MovieResponse>,
-    onAddToFavouriteClick: (MovieResponse) -> Unit,
+    list: List<Movie>,
+    onAddToFavouriteClick: (Movie) -> Unit,
     onLoadMoreMovies: () -> Unit,
     onPullToRefresh: () -> Unit
 ) {
@@ -75,15 +76,15 @@ private fun ListContent(
                     .fillMaxSize()
                     .padding(16.dp),
             ) {
-                itemsIndexed(list) { index, movieResponse ->
+                itemsIndexed(list) { index, movie ->
                     DateMovieCard(
-                        title = movieResponse.title ?: "",
-                        overview = movieResponse.overview ?: "",
-                        rate = movieResponse.vote_average ?: 0.0,
-                        date = movieResponse.release_date ?: "",
-                        poster = movieResponse.poster_path ?: "",
+                        title = movie.title,
+                        overview = movie.overview,
+                        rate = movie.rate,
+                        date = movie.releaseDate,
+                        poster = movie.posterPath,
                         isFavourite = false,
-                        onAddToFavouriteClick = { onAddToFavouriteClick(movieResponse) }
+                        onAddToFavouriteClick = { onAddToFavouriteClick(movie) }
                     )
                     if (index >= list.size - 1) {
                         onLoadMoreMovies()

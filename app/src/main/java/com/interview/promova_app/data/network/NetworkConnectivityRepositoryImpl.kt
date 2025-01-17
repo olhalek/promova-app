@@ -34,7 +34,6 @@ class NetworkConnectivityRepositoryImpl @Inject constructor(
                 super.onLost(network)
                 trySend(NetworkStatus.Disconnected)
             }
-
         }
 
         val request = NetworkRequest.Builder()

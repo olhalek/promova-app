@@ -46,8 +46,12 @@ class MovieRepositoryImpl @Inject constructor(
         }.flowOn(Dispatchers.IO)
     }
 
-    override suspend fun addMoviesToDd(movieEntities: List<MovieEntity>) {
+    override suspend fun addMoviesFromDd(movieEntities: List<MovieEntity>) {
         movieDatabase.movieDao.upsertMovieList(movieEntities)
+    }
+
+    override suspend fun getMoviesToDd(): List<MovieEntity> {
+        return movieDatabase.movieDao.getMovies()
     }
 
     override suspend fun addMovieToFavourites(movieEntity: FavouriteMovieEntity) {

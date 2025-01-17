@@ -11,7 +11,9 @@ interface MovieRepository {
 
     suspend fun getMovies(page: Int): Flow<ApiState<MoviesResponseItem>>
 
-    suspend fun addMoviesToDd(movieEntities: List<MovieEntity>)
+    suspend fun addMoviesFromDd(movieEntities: List<MovieEntity>)
+
+    suspend fun getMoviesToDd(): List<MovieEntity>
 
     suspend fun addMovieToFavourites(movieEntity: FavouriteMovieEntity)
 

@@ -4,18 +4,17 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.interview.promova_app.data.network.NetworkStatus
 import com.interview.promova_app.data.remote.ApiState
-import com.interview.promova_app.data.remote.MovieResponse
-import com.interview.promova_app.domain.mapper.MovieMapper
 import com.interview.promova_app.domain.useCase.MovieUseCase
 import com.interview.promova_app.domain.useCase.NetworkUseCase
+import com.interview.promova_app.ui.main.model.Movie
 import com.interview.promova_app.ui.main.model.MovieState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharingStarted.Companion.WhileSubscribed
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.flow.transform
+import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -23,8 +22,7 @@ import javax.inject.Inject
 @HiltViewModel
 class HomeViewModel @Inject constructor(
     private val movieUseCase: MovieUseCase,
-    private val networkUseCase: NetworkUseCase,
-    private val mapper: MovieMapper
+    networkUseCase: NetworkUseCase,
 ) : ViewModel() {
 
     private val _movieState: MutableStateFlow<MovieState> = MutableStateFlow(MovieState())
@@ -34,61 +32,80 @@ class HomeViewModel @Inject constructor(
     val isRefreshing: StateFlow<Boolean>
         get() = _isRefreshing.asStateFlow()
 
+    private val _isMoviesFromDb = MutableStateFlow(false)
+
+    private val networkStatus: StateFlow<NetworkStatus> = networkUseCase.getNetworkStatus().stateIn(
+        initialValue = NetworkStatus.Unknown,
+        scope = viewModelScope,
+        started = WhileSubscribed(5000)
+    )
+
     init {
-        viewModelScope.launch {
-            val networkStatus = networkUseCase.getNetworkStatus(viewModelScope).value
-
-            if (networkStatus == NetworkStatus.Connected) {
-                getMovieList()
-
-                movieUseCase.addMoviesToDd(movieState.value)
-            } else {
-                _movieState.value = MovieState(
-                    isInternetOn = false
-                )
-            }
-        }
+        loadMovies(addToDb = true)
     }
 
     fun onPullToRefresh() {
         _isRefreshing.update { true }
         _movieState.update { it.copy(list = emptyList()) }
 
+        loadMovies(addToDb = false)
+    }
+
+    fun addToFavourites(movie: Movie) {
         viewModelScope.launch {
-            getMovieList()
+            movieUseCase.addMovieToFavourites(movie)
         }
     }
 
-    fun addToFavourites(movieResponse: MovieResponse) {
+    fun loadMovies(addToDb: Boolean) {
         viewModelScope.launch {
-            movieUseCase.addMovieToFavourites(mapper.toFavouriteMovieEntity(movieResponse))
+            if (networkStatus.value == NetworkStatus.Connected) {
+                getMovieList()
+
+                if (_movieState.value.listPage == 1 && addToDb) {
+                    movieUseCase.addMoviesToDd(movieState.value.list)
+                }
+            } else {
+                val moviesFromDb = getMoviesFromDb()
+
+                _isRefreshing.update { false }
+
+                if (moviesFromDb.isNotEmpty()) {
+                    _movieState.update { it.copy(list = moviesFromDb) }
+                } else {
+                    _movieState.update {
+                        it.copy(isInternetOn = false)
+                    }
+                }
+            }
         }
     }
 
-    fun loadMoreMovies() {
-        viewModelScope.launch {
-            getMovieList()
-        }
+
+    private suspend fun getMoviesFromDb(): List<Movie> {
+        return movieUseCase.getMoviesFromDd()
     }
 
     private suspend fun getMovieList() {
-        movieUseCase.getMovies(
-            page = movieState.value.listPage
-        ).collectLatest { apiState ->
+        movieUseCase.getMovies(page = movieState.value.listPage).collectLatest { apiState ->
             when (apiState) {
                 is ApiState.Success -> {
                     _movieState.update {
+                        val moviesList = if (_isMoviesFromDb.value)
+                            apiState.data!! else movieState.value.list + apiState.data!!
+
                         it.copy(
-                            list = movieState.value.list + apiState.data!!.shuffled(),
+                            list = moviesList,
                             listPage = movieState.value.listPage + 1,
                             isLoading = false
                         )
                     }
                     _isRefreshing.update { false }
+                    _isMoviesFromDb.update { false }
                 }
 
                 is ApiState.Loading -> {
-                    if(_movieState.value.list.isEmpty()) {
+                    if (_movieState.value.list.isEmpty()) {
                         _movieState.update {
                             it.copy(isLoading = true)
                         }
