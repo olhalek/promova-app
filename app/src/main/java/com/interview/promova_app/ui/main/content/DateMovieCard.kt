@@ -19,7 +19,7 @@ fun DateMovieCard(
     rate: Double,
     overview: String,
     poster: String,
-    onAddToFavouriteClick: () -> Unit,
+    onFavouriteClick: () -> Unit,
     isFavourite: Boolean
 ) {
     Column(
@@ -36,7 +36,7 @@ fun DateMovieCard(
             rate = rate,
             overview = overview,
             poster = poster,
-            onAddToFavouriteClick = onAddToFavouriteClick,
+            onFavouriteClick = onFavouriteClick,
             isFavourite = isFavourite
         )
     }
@@ -52,7 +52,7 @@ private fun DateMovieCardPreview() {
             rate = 4.5,
             date = "1 Feb",
             poster = "",
-            onAddToFavouriteClick = {},
+            onFavouriteClick = {},
             isFavourite = false
         )
     }

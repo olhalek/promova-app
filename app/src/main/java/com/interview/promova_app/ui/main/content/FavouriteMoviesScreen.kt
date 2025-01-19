@@ -7,24 +7,20 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
+import androidx.compose.foundation.lazy.grid.itemsIndexed
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.interview.promova_app.ui.main.viewModel.FavouriteViewModel
+import com.interview.promova_app.ui.main.viewModel.HomeViewModel
 
 @Composable
 fun FavouriteMoviesScreen(
-    viewModel: FavouriteViewModel = hiltViewModel()
+    viewModel: HomeViewModel = hiltViewModel()
 ) {
-    LaunchedEffect(Unit) {
-        viewModel.getMovies()
-    }
+    val favouriteMoviesList = viewModel.favouriteMoviesList
 
-    val favouriteMoviesList = viewModel.favouriteMoviesState.value
-
-    if(favouriteMoviesList.isEmpty()) {
+    if (favouriteMoviesList.isEmpty()) {
         NotificationContent(notificationType = NotificationType.EMPTY)
     } else {
         LazyVerticalGrid(
@@ -33,19 +29,19 @@ fun FavouriteMoviesScreen(
                 .fillMaxSize()
                 .padding(16.dp),
         ) {
-            items(favouriteMoviesList) {
+            itemsIndexed(favouriteMoviesList) {index, it ->
                 Column(
-                    modifier = Modifier.padding(top = 12.dp),
+                    modifier = Modifier.animateItem().padding(top = 12.dp),
                     verticalArrangement = Arrangement.spacedBy(10.dp)
                 ) {
                     MovieCard(
                         title = it.title,
                         overview = it.overview,
-                        rate = it.vote_average,
-                        poster = it.poster_path,
-                        isFavourite = true,
-                        onAddToFavouriteClick = {
-                            viewModel.deleteFromFavourites(it)
+                        rate = it.rate,
+                        poster = it.posterPath,
+                        isFavourite = it.isFavourite,
+                        onFavouriteClick = {
+                            viewModel.handleFavourite(it, index)
                         }
                     )
                 }

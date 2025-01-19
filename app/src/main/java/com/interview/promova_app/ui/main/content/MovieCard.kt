@@ -48,7 +48,7 @@ fun MovieCard(
     rate: Double,
     overview: String,
     poster: String,
-    onAddToFavouriteClick: () -> Unit,
+    onFavouriteClick: () -> Unit,
     isFavourite: Boolean
 ) {
     val imageState = rememberAsyncImagePainter(
@@ -92,14 +92,7 @@ fun MovieCard(
                 }
             }
 
-            val sendIntent: Intent = Intent().apply {
-                action = Intent.ACTION_SEND
-                putExtra(
-                    Intent.EXTRA_TEXT,
-                    "${stringResource(id = R.string.check_out_movie)} - $title"
-                )
-                type = "text/plain"
-            }
+            val sendIntent: Intent = getSendIntent(title = title)
             val shareIntent = Intent.createChooser(sendIntent, null)
             val context = LocalContext.current
 
@@ -109,7 +102,7 @@ fun MovieCard(
             ) {
                 val likeRes =
                     if (isFavourite) Icons.Rounded.Favorite else Icons.Rounded.FavoriteBorder
-                Button(onClick = onAddToFavouriteClick) {
+                Button(onClick = onFavouriteClick) {
                     Icon(imageVector = likeRes, contentDescription = null)
                 }
 
@@ -124,6 +117,18 @@ fun MovieCard(
                 }
             }
         }
+    }
+}
+
+@Composable
+private fun getSendIntent(title: String): Intent {
+    return Intent().apply {
+        action = Intent.ACTION_SEND
+        putExtra(
+            Intent.EXTRA_TEXT,
+            "${stringResource(id = R.string.check_out_movie)} - $title"
+        )
+        type = "text/plain"
     }
 }
 
@@ -169,7 +174,7 @@ private fun MovieCardPreview() {
             overview = "dfgn sglk s slkfg s fkg  slkg s gn sglk s slkfg s fkg  slkg s gskd ns fglkgn sglk s slkfg s fkg  slkg s gskd ns fglkgn sglk s slkfg s fkg  slkg s gskd ns fglkgn sglk s slkfg s fkg  slkg s gskd ns fglkgn sglk s slkfg s fkg  slkg s gskd ns fglkgskd ns fglk sn sdlg kns lksdf",
             rate = 4.5,
             poster = "",
-            onAddToFavouriteClick = {},
+            onFavouriteClick = {},
             isFavourite = false
         )
     }

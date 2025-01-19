@@ -34,12 +34,14 @@ class MovieUseCase @Inject constructor(
         movieRepository.addMovieToFavourites(mapper.toFavouriteMovieEntity(movie))
     }
 
-    suspend fun deleteMovieFromFavourites(movieEntity: FavouriteMovieEntity) {
-        movieRepository.deleteMovieFromFavourites(movieEntity)
+    suspend fun deleteMovieFromFavourites(movie: Movie) {
+        movieRepository.deleteMovieFromFavourites(mapper.toFavouriteMovieEntity(movie))
     }
 
-    suspend fun getFavouriteMovies(): List<FavouriteMovieEntity> {
-        return movieRepository.getFavouriteMovies()
+    suspend fun getFavouriteMovies(): List<Movie> {
+        return movieRepository.getFavouriteMovies().map {
+            mapper.toMovie(it)
+        }
     }
 
     suspend fun getMoviesFromDd(): List<Movie> {

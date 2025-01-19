@@ -22,3 +22,4 @@ data class FavouriteMovieEntity(
     val title: String,
     val vote_average: Double,
 )
+

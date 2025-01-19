@@ -13,6 +13,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.interview.promova_app.R
@@ -33,17 +34,37 @@ fun LoginScreen(navigateToHome: () -> Unit) {
             painter = painterResource(id = R.drawable.ic_cinema),
             contentDescription = null
         )
-        Button(
-            modifier = Modifier.fillMaxWidth(),
-            onClick = navigateToHome
-        ) {
-            Text(
-                text = "Sign in with Facebook",
-                style = PromovaTypography.headlineMedium
-            )
+        Column {
+            Button(
+                modifier = Modifier.fillMaxWidth(),
+                onClick = {  }
+            ) {
+                Text(
+                    text = stringResource(id = R.string.sign_in_with_google),
+                    style = PromovaTypography.headlineMedium
+                )
+            }
+
+            Button(
+                modifier = Modifier.fillMaxWidth(),
+                onClick = {  }
+            ) {
+                Text(
+                    text = stringResource(id = R.string.sign_in_with_facebook),
+                    style = PromovaTypography.headlineMedium
+                )
+            }
+
+            Button(
+                modifier = Modifier.fillMaxWidth(),
+                onClick = navigateToHome
+            ) {
+                Text(
+                    text = stringResource(id = R.string.sign_in_without_logging_in),
+                    style = PromovaTypography.headlineMedium
+                )
+            }
         }
-
-
     }
 }
 
