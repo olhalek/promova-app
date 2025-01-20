@@ -40,7 +40,7 @@ import coil.size.Size
 import com.interview.promova_app.R
 import com.interview.promova_app.common.IMAGE_BASE_URL
 import com.interview.promova_app.ui.theme.PromovaTheme
-import com.interview.promova_app.ui.theme.PromovaTypography
+import com.interview.promova_app.ui.theme.CustomTypography
 
 @Composable
 fun MovieCard(
@@ -76,17 +76,17 @@ fun MovieCard(
                         Icon(imageVector = Icons.Rounded.Star, contentDescription = null)
                         Text(
                             text = rate.toString(),
-                            style = PromovaTypography.labelLarge
+                            style = CustomTypography.labelLarge
                         )
                     }
                 }
                 Column(verticalArrangement = Arrangement.spacedBy(16.dp)) {
                     Text(
                         text = title,
-                        style = PromovaTypography.labelLarge
+                        style = CustomTypography.labelLarge
                     )
                     Text(
-                        style = PromovaTypography.labelMedium,
+                        style = CustomTypography.labelMedium,
                         text = overview,
                     )
                 }

@@ -11,6 +11,7 @@ data class MovieEntity(
     val release_date: String,
     val title: String,
     val vote_average: Double,
+    val vote_count: Double
 )
 
 @Entity
@@ -21,5 +22,6 @@ data class FavouriteMovieEntity(
     val release_date: String,
     val title: String,
     val vote_average: Double,
+    val vote_count: Double
 )
 

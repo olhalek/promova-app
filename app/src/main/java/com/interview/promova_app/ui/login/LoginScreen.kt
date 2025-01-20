@@ -18,7 +18,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.interview.promova_app.R
 import com.interview.promova_app.ui.theme.PromovaTheme
-import com.interview.promova_app.ui.theme.PromovaTypography
+import com.interview.promova_app.ui.theme.CustomTypography
 
 @Composable
 fun LoginScreen(navigateToHome: () -> Unit) {
@@ -41,7 +41,7 @@ fun LoginScreen(navigateToHome: () -> Unit) {
             ) {
                 Text(
                     text = stringResource(id = R.string.sign_in_with_google),
-                    style = PromovaTypography.headlineMedium
+                    style = CustomTypography.headlineMedium
                 )
             }
 
@@ -51,7 +51,7 @@ fun LoginScreen(navigateToHome: () -> Unit) {
             ) {
                 Text(
                     text = stringResource(id = R.string.sign_in_with_facebook),
-                    style = PromovaTypography.headlineMedium
+                    style = CustomTypography.headlineMedium
                 )
             }
 
@@ -61,7 +61,7 @@ fun LoginScreen(navigateToHome: () -> Unit) {
             ) {
                 Text(
                     text = stringResource(id = R.string.sign_in_without_logging_in),
-                    style = PromovaTypography.headlineMedium
+                    style = CustomTypography.headlineMedium
                 )
             }
         }

@@ -18,4 +18,8 @@
     <string name="sign_in_with_google">Sign in with Google</string>
     <string name="sign_in_without_logging_in">Sign in without loging in</string>
 
+    <string name="none_button">None</string>
+    <string name="vote_7_button">Vote 7+</string>
+    <string name="vote_count_button">Vote 100+ ppl</string>
+
 </resources>

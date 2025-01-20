@@ -16,6 +16,7 @@ class MovieMapper @Inject constructor() {
             poster_path = movie.posterPath,
             release_date = movie.releaseDate,
             title = movie.title,
+            vote_count = movie.rateCount,
             vote_average = movie.rate,
         )
     }
@@ -27,6 +28,7 @@ class MovieMapper @Inject constructor() {
             poster_path = movie.posterPath,
             release_date = movie.releaseDate,
             title = movie.title,
+            vote_count = movie.rateCount,
             vote_average = movie.rate,
         )
     }
@@ -40,6 +42,7 @@ class MovieMapper @Inject constructor() {
                 posterPath = movieResponse?.poster_path ?: "",
                 releaseDate = movieResponse?.release_date ?: "",
                 rate = movieResponse?.vote_average ?: 0.0,
+                rateCount = movieResponse?.vote_count ?: 0.0,
                 isFavourite = false
             )
         }
@@ -53,6 +56,7 @@ class MovieMapper @Inject constructor() {
             posterPath = from.poster_path,
             releaseDate = from.release_date,
             rate = from.vote_average,
+            rateCount = from.vote_count,
             isFavourite = true
         )
     }
@@ -65,6 +69,7 @@ class MovieMapper @Inject constructor() {
             posterPath = from.poster_path,
             releaseDate = from.release_date,
             rate = from.vote_average,
+            rateCount = from.vote_count,
             isFavourite = false
         )
     }

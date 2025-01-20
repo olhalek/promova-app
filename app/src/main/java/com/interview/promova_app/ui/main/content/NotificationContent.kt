@@ -17,7 +17,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.interview.promova_app.R
-import com.interview.promova_app.ui.theme.PromovaTypography
+import com.interview.promova_app.ui.theme.CustomTypography
 
 @Composable
 fun NotificationContent(notificationType: NotificationType) {
@@ -41,7 +41,7 @@ fun NotificationContent(notificationType: NotificationType) {
         Spacer(modifier = Modifier.height(16.dp))
         Text(
             text = stringResource(id = strRes),
-            style = PromovaTypography.labelLarge
+            style = CustomTypography.labelLarge
         )
     }
 }

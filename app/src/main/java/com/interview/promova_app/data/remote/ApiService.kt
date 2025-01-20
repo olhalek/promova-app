@@ -9,7 +9,6 @@ interface ApiService {
     @GET("discover/movie")
     suspend fun getMovies(
         @Query("page") page: Int,
-        //@Query("sort_by") sortBy: String,
         @Query("api_key") apiKey: String
     ): Response<MoviesResponseItem>
 }

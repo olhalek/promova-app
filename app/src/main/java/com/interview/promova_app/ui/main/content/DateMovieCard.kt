@@ -9,7 +9,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.interview.promova_app.ui.theme.PromovaTheme
-import com.interview.promova_app.ui.theme.PromovaTypography
+import com.interview.promova_app.ui.theme.CustomTypography
 
 
 @Composable
@@ -29,7 +29,7 @@ fun DateMovieCard(
         Text(
             modifier = Modifier.padding(top = 10.dp, start = 6.dp),
             text = date,
-            style = PromovaTypography.labelLarge
+            style = CustomTypography.labelLarge
         )
         MovieCard(
             title = title,

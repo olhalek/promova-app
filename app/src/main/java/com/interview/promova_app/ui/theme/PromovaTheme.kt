@@ -33,7 +33,7 @@ fun PromovaTheme(
 
     MaterialTheme(
         colorScheme = if (darkTheme) DarkColorPalette else LightColorPalette,
-        typography = PromovaTypography,
+        typography = CustomTypography,
         content = content
     )
 }

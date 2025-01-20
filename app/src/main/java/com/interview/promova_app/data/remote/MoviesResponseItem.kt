@@ -14,5 +14,6 @@ data class MovieResponse(
     val overview:String?,
     val release_date: String?,
     val poster_path:String?,
-    val vote_average:Double?
+    val vote_average:Double?,
+    val vote_count: Double
 )

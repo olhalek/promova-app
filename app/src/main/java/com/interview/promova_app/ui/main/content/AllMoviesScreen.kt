@@ -4,6 +4,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.grid.GridCells
@@ -11,11 +12,17 @@ import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.itemsIndexed
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.SegmentedButton
+import androidx.compose.material3.SegmentedButtonDefaults
+import androidx.compose.material3.SingleChoiceSegmentedButtonRow
 import androidx.compose.material3.Text
 import androidx.compose.material3.pulltorefresh.PullToRefreshBox
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
@@ -26,7 +33,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.interview.promova_app.R
 import com.interview.promova_app.ui.main.model.Movie
 import com.interview.promova_app.ui.main.viewModel.HomeViewModel
-import com.interview.promova_app.ui.theme.PromovaTypography
+import com.interview.promova_app.ui.theme.CustomTypography
 
 @Composable
 fun AllMoviesScreen(
@@ -44,9 +51,10 @@ fun AllMoviesScreen(
         moviesError.isNotEmpty() -> NotificationContent(notificationType = NotificationType.API_ERROR)
         else -> {
             ListContent(
-                list = viewModel.movieList,
+                list = viewModel.filteredList,
                 isRefreshing = isRefreshing,
                 onPullToRefresh = { viewModel.onPullToRefresh() },
+                onFilterClicked = { viewModel.filterList(it) },
                 onFavouriteClick = { movie, index ->
                     viewModel.handleFavourite(movie, index)
                 },
@@ -62,21 +70,47 @@ fun AllMoviesScreen(
 private fun ListContent(
     isRefreshing: Boolean,
     list: List<Movie>,
+    onFilterClicked: (FilterSegmentedButtons) -> Unit,
     onFavouriteClick: (Movie, Int) -> Unit,
     onLoadMoreMovies: () -> Unit,
     onPullToRefresh: () -> Unit
 ) {
-    Column(modifier = Modifier.fillMaxSize()) {
+    var chosenSegmentedButton by remember { mutableStateOf(FilterSegmentedButtons.NONE) }
+
+    Column(
+        modifier = Modifier.fillMaxSize().padding(horizontal = 16.dp, vertical = 8.dp),
+        verticalArrangement = Arrangement.spacedBy(8.dp)
+    ) {
+        SingleChoiceSegmentedButtonRow(modifier = Modifier.fillMaxWidth()) {
+            FilterSegmentedButtons.entries.forEachIndexed { index, button ->
+                SegmentedButton(
+                    selected = chosenSegmentedButton == button,
+                    onClick = {
+                        chosenSegmentedButton = button
+                        onFilterClicked(button)
+                    },
+                    shape = SegmentedButtonDefaults.itemShape(
+                        index = index,
+                        count = FilterSegmentedButtons.entries.size
+                    ),
+                ) {
+                    Text(
+                        text = stringResource(id = button.strRes),
+                        style = CustomTypography.labelMedium
+                    )
+                }
+            }
+        }
         PullToRefreshBox(
             isRefreshing = isRefreshing,
-            onRefresh = onPullToRefresh,
-            modifier = Modifier.padding(8.dp)
+            onRefresh = {
+                onPullToRefresh()
+                chosenSegmentedButton = FilterSegmentedButtons.NONE
+            },
         ) {
             LazyVerticalGrid(
                 columns = GridCells.Fixed(1),
-                modifier = Modifier
-                    .fillMaxSize()
-                    .padding(16.dp),
+                modifier = Modifier.fillMaxSize()
             ) {
                 itemsIndexed(list) { index, movie ->
                     DateMovieCard(
@@ -109,7 +143,7 @@ private fun LoadingContent() {
         Spacer(modifier = Modifier.height(8.dp))
         Text(
             text = stringResource(id = R.string.loading),
-            style = PromovaTypography.labelLarge
+            style = CustomTypography.labelLarge
         )
     }
 }

@@ -3,10 +3,13 @@ package com.interview.promova_app.ui.main.viewModel
 import androidx.compose.runtime.mutableStateListOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.interview.promova_app.common.FILTER_RATE_COUNT_NUMBER
+import com.interview.promova_app.common.FILTER_RATE_NUMBER
 import com.interview.promova_app.data.network.NetworkStatus
 import com.interview.promova_app.data.remote.ApiState
 import com.interview.promova_app.domain.useCase.MovieUseCase
 import com.interview.promova_app.domain.useCase.NetworkUseCase
+import com.interview.promova_app.ui.main.content.FilterSegmentedButtons
 import com.interview.promova_app.ui.main.model.Movie
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -27,8 +30,10 @@ class HomeViewModel @Inject constructor(
 ) : ViewModel() {
 
     private val _movieList = mutableStateListOf<Movie>()
-    val movieList : List<Movie>
-        get() = _movieList.toList()
+
+    private val _filteredList = mutableStateListOf<Movie>()
+    val filteredList: List<Movie>
+        get() = _filteredList.toList()
 
     private val _favouriteMoviesList = mutableStateListOf<Movie>()
     val favouriteMoviesList: List<Movie>
@@ -67,7 +72,6 @@ class HomeViewModel @Inject constructor(
 
     fun onPullToRefresh() {
         _isRefreshing.update { true }
-        _movieList.clear()
 
         loadMovies(addToDb = false)
     }
@@ -79,6 +83,7 @@ class HomeViewModel @Inject constructor(
 
                 if (_movieList.any { it.id == movie.id }) {
                     _movieList[index] = movie.copy(isFavourite = false)
+                    _filteredList[index] = movie.copy(isFavourite = false)
                 }
             } else {
                 movieUseCase.addMovieToFavourites(movie)
@@ -86,6 +91,7 @@ class HomeViewModel @Inject constructor(
                 _favouriteMoviesList.add(movie.copy(isFavourite = true))
 
                 _movieList[index] = movie.copy(isFavourite = true)
+                _filteredList[index] = movie.copy(isFavourite = true)
             }
         }
     }
@@ -112,6 +118,24 @@ class HomeViewModel @Inject constructor(
         }
     }
 
+    fun filterList(type: FilterSegmentedButtons) {
+        _filteredList.clear()
+
+        when (type) {
+            FilterSegmentedButtons.VOTE7 -> {
+                _filteredList.addAll(_movieList.filter { it.rate >= FILTER_RATE_NUMBER })
+            }
+
+            FilterSegmentedButtons.COUNT100 -> {
+                _filteredList.addAll(_movieList.filter { it.rateCount >= FILTER_RATE_COUNT_NUMBER })
+            }
+
+            FilterSegmentedButtons.NONE -> {
+                _filteredList.addAll(_movieList)
+            }
+        }
+    }
+
     private suspend fun loadFavouriteMovies() {
         _favouriteMoviesList.addAll(favouriteMovieUseCase.getFavouriteMovies())
     }
@@ -129,12 +153,12 @@ class HomeViewModel @Inject constructor(
         movieUseCase.getMovies(page = _listPage.value).collectLatest { apiState ->
             when (apiState) {
                 is ApiState.Success -> {
-                    val listToAdd =  if (_isMoviesFromDb.value)
+                    val listToAdd = if (_isMoviesFromDb.value)
                         apiState.data!! else _movieList + apiState.data!!
 
                     _movieList.clear()
                     _movieList.addAll(
-                       listToAdd.map { movie ->
+                        listToAdd.map { movie ->
                             if (_favouriteMoviesList.any { favouriteMovie ->
                                     favouriteMovie.id == movie.id
                                 }) {
@@ -142,6 +166,9 @@ class HomeViewModel @Inject constructor(
                             } else movie
                         }
                     )
+
+                    _filteredList.clear()
+                    _filteredList.addAll(_movieList)
 
                     _isLoading.update { false }
                     _listPage.update { it + 1 }
