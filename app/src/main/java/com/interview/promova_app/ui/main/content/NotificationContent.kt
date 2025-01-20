@@ -17,6 +17,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.interview.promova_app.R
+import com.interview.promova_app.ui.main.model.NotificationType
+import com.interview.promova_app.ui.theme.AppPaddings
 import com.interview.promova_app.ui.theme.CustomTypography
 
 @Composable
@@ -38,7 +40,7 @@ fun NotificationContent(notificationType: NotificationType) {
                 Icons.Rounded.FavoriteBorder else Icons.Rounded.Warning,
             contentDescription = null
         )
-        Spacer(modifier = Modifier.height(16.dp))
+        Spacer(modifier = Modifier.height(AppPaddings().spacing1))
         Text(
             text = stringResource(id = strRes),
             style = CustomTypography.labelLarge

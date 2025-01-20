@@ -9,6 +9,10 @@ interface ApiService {
     @GET("discover/movie")
     suspend fun getMovies(
         @Query("page") page: Int,
+        @Query("sort_by") sortBy: String,
+        @Query("vote_count.gte") voteCount: Double,
+        @Query("vote_average.gte") voteAverage: Double,
+        @Query("primary_release_date.lte") currentDate: String,
         @Query("api_key") apiKey: String
     ): Response<MoviesResponseItem>
 }

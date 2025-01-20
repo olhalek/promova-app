@@ -8,6 +8,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.interview.promova_app.ui.theme.AppPaddings
 import com.interview.promova_app.ui.theme.PromovaTheme
 import com.interview.promova_app.ui.theme.CustomTypography
 
@@ -23,11 +24,11 @@ fun DateMovieCard(
     isFavourite: Boolean
 ) {
     Column(
-        modifier = Modifier.padding(top = 12.dp),
-        verticalArrangement = Arrangement.spacedBy(10.dp)
+        modifier = Modifier.padding(top = AppPaddings().spacing1_5),
+        verticalArrangement = Arrangement.spacedBy(AppPaddings().spacing1_25)
     ) {
         Text(
-            modifier = Modifier.padding(top = 10.dp, start = 6.dp),
+            modifier = Modifier.padding(top = AppPaddings().spacing1_25, start = AppPaddings().spacing0_75),
             text = date,
             style = CustomTypography.labelLarge
         )
@@ -48,7 +49,7 @@ private fun DateMovieCardPreview() {
     PromovaTheme {
         DateMovieCard(
             title = "Jame Smith",
-            overview = "dfgn sglk s slkfg s fkg  slkg s gn sglk s slkfg s fkg  slkg s gskd ns fglkgn sglk s slkfg s fkg  slkg s gskd ns fglkgn sglk s slkfg s fkg  slkg s gskd ns fglkgn sglk s slkfg s fkg  slkg s gskd ns fglkgn sglk s slkfg s fkg  slkg s gskd ns fglkgskd ns fglk sn sdlg kns lksdf",
+            overview = "  s slkfg s fkg  slkg s",
             rate = 4.5,
             date = "1 Feb",
             poster = "",

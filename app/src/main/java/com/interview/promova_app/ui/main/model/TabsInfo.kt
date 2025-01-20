@@ -1,4 +1,4 @@
-package com.interview.promova_app.ui.main.content
+package com.interview.promova_app.ui.main.model
 
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
@@ -19,10 +19,4 @@ enum class TabsInfo(
         iconRes = R.drawable.ic_heart,
         iconResFilled = R.drawable.ic_heart_filled
     )
-}
-
-enum class FilterSegmentedButtons(@StringRes val strRes: Int,) {
-    NONE(R.string.none_button),
-    VOTE7(R.string.vote_7_button),
-    COUNT100(R.string.vote_count_button)
 }

@@ -1,4 +1,4 @@
-package com.interview.promova_app.ui.main.content
+package com.interview.promova_app.ui.main.model
 
 enum class NotificationType {
     NO_INTERNET,

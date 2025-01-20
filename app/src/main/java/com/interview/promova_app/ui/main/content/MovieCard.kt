@@ -39,6 +39,7 @@ import coil.request.ImageRequest
 import coil.size.Size
 import com.interview.promova_app.R
 import com.interview.promova_app.common.IMAGE_BASE_URL
+import com.interview.promova_app.ui.theme.AppPaddings
 import com.interview.promova_app.ui.theme.PromovaTheme
 import com.interview.promova_app.ui.theme.CustomTypography
 
@@ -58,20 +59,20 @@ fun MovieCard(
             .build()
     ).state
 
-    Card(shape = RoundedCornerShape(12.dp)) {
+    Card(shape = RoundedCornerShape(AppPaddings().spacing1_5)) {
         Column(
             modifier = Modifier.padding(20.dp),
-            verticalArrangement = Arrangement.spacedBy(12.dp)
+            verticalArrangement = Arrangement.spacedBy(AppPaddings().spacing1_5)
         ) {
             Row(
                 modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.spacedBy(12.dp)
+                horizontalArrangement = Arrangement.spacedBy(AppPaddings().spacing1_5)
             ) {
-                Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
+                Column(verticalArrangement = Arrangement.spacedBy(AppPaddings().spacing1)) {
                     ImageContent(imageState = imageState)
                     Row(
                         verticalAlignment = Alignment.CenterVertically,
-                        horizontalArrangement = Arrangement.spacedBy(4.dp)
+                        horizontalArrangement = Arrangement.spacedBy(AppPaddings().spacing0_5)
                     ) {
                         Icon(imageVector = Icons.Rounded.Star, contentDescription = null)
                         Text(
@@ -80,7 +81,7 @@ fun MovieCard(
                         )
                     }
                 }
-                Column(verticalArrangement = Arrangement.spacedBy(16.dp)) {
+                Column(verticalArrangement = Arrangement.spacedBy(AppPaddings().spacing2)) {
                     Text(
                         text = title,
                         style = CustomTypography.labelLarge
@@ -106,14 +107,12 @@ fun MovieCard(
                     Icon(imageVector = likeRes, contentDescription = null)
                 }
 
-                Spacer(modifier = Modifier.width(8.dp))
+                Spacer(modifier = Modifier.width(AppPaddings().spacing1))
 
                 Button(onClick = {
                     context.startActivity(shareIntent)
                 }) {
                     Icon(imageVector = Icons.Rounded.Share, contentDescription = null)
-                    Spacer(modifier = Modifier.width(4.dp))
-                    Text(text = stringResource(id = R.string.share))
                 }
             }
         }
@@ -137,7 +136,7 @@ private fun ImageContent(imageState: AsyncImagePainter.State) {
     if (imageState is AsyncImagePainter.State.Error || imageState is AsyncImagePainter.State.Loading) {
         Box(
             modifier = Modifier
-                .padding(6.dp)
+                .padding(AppPaddings().spacing0_75)
                 .width(150.dp)
                 .height(250.dp)
                 .clip(RoundedCornerShape(22.dp)),

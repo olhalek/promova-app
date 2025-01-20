@@ -34,37 +34,16 @@ fun LoginScreen(navigateToHome: () -> Unit) {
             painter = painterResource(id = R.drawable.ic_cinema),
             contentDescription = null
         )
-        Column {
-            Button(
-                modifier = Modifier.fillMaxWidth(),
-                onClick = {  }
-            ) {
-                Text(
-                    text = stringResource(id = R.string.sign_in_with_google),
-                    style = CustomTypography.headlineMedium
-                )
-            }
-
-            Button(
-                modifier = Modifier.fillMaxWidth(),
-                onClick = {  }
-            ) {
-                Text(
-                    text = stringResource(id = R.string.sign_in_with_facebook),
-                    style = CustomTypography.headlineMedium
-                )
-            }
-
-            Button(
-                modifier = Modifier.fillMaxWidth(),
-                onClick = navigateToHome
-            ) {
-                Text(
-                    text = stringResource(id = R.string.sign_in_without_logging_in),
-                    style = CustomTypography.headlineMedium
-                )
-            }
+        Button(
+            modifier = Modifier.fillMaxWidth(),
+            onClick = navigateToHome
+        ) {
+            Text(
+                text = stringResource(id = R.string.sign_in_without_logging_in),
+                style = CustomTypography.headlineMedium
+            )
         }
+
     }
 }
 
